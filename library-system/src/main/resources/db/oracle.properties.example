@@ -2,3 +2,7 @@ driver=oracle.jdbc.driver.OracleDriver
 url={여기에 db접속 url}
 user={localdb id?username}
 pw={db 패스워드}
+
+
+
+{oracle.properties} <== 이 이름으로 이 디렉토리에 파일 생성
