@@ -2,6 +2,7 @@
 .DS_Store
 /Servers/
 /.metadata/
+**/oracle.properties
 
 # Created by https://www.toptal.com/developers/gitignore/api/java,eclipse,dbeaver,maven
 # Edit at https://www.toptal.com/developers/gitignore?templates=java,eclipse,dbeaver,maven
@@ -9,6 +10,9 @@
 ### DBeaver ###
 # ide config file
 .dbeaver-data-sources*.xml
+
+### vscode ###
+.vscode/
 
 ### Eclipse ###
 .metadata
