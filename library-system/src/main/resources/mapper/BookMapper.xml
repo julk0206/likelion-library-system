@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.team.five.mapper.BookMapper">
+    <resultMap id="BookResultMap" type="com.team.five.dto.BookDto">
+        <id property="bookId" column="book_id" />
+        <result property="title" column="title" />
+        <result property="author" column="author" />
+        <result property="genreCode" column="genre_code" />
+        <result property="isbn" column="isbn" />
+    </resultMap>
+
+    <select id="findAllBooks" resultMap="BookResultMap">
+        SELECT BOOK_ID, TITLE, AUTHOR, GENRE_CODE, isbn
+        FROM BOOK
+    </select>
+
+
+</mapper>
