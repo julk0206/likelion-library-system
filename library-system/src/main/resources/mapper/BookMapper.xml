@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.team.five.mapper.BookMapper">
+    <resultMap id="BookResultMap" type="com.team.five.dto.BookDto">
+        <id property="bookId" column="book_id"/>
+        <result property="title" column="title"/>
+        <result property="author" column="author"/>
+        <result property="genreCode" column="genre_code"/>
+        <result property="isbn" column="isbn"/>
+    </resultMap>
+
+    <resultMap id="BookDetailResultMap" type="com.team.five.dto.BookDto">
+        <id property="bookId" column="book_id"/>
+        <result property="title" column="title"/>
+        <result property="author" column="author"/>
+        <result property="genreCode" column="genre_code"/>
+        <result property="isbn" column="isbn"/>
+
+        <collection property="items" ofType="com.team.five.dto.BookItemDto">
+            <id property="itemId" column="item_id"/>
+            <result property="status" column="status"/>
+        </collection>
+    </resultMap>
+
+    <select id="selectAllBooks" resultMap="BookResultMap">
+        SELECT BOOK_ID, TITLE, AUTHOR, GENRE_CODE, isbn
+        FROM BOOK
+    </select>
+
+    <select id="selectBooksByCondition" resultMap="BookResultMap">
+        SELECT * FROM BOOK
+        <where>
+            ${type} LIKE '%' || #{value} || '%'
+        </where>
+    </select>
+
+    <select id="selectBookDetail" resultMap="BookDetailResultMap">
+        SELECT B.book_id, B.title, B.author,
+        B.genre_code, B.isbn, I.item_id, I.status FROM BOOK B
+        LEFT JOIN BOOK_ITEM I ON B.book_id = I.book_id
+        WHERE B.book_id = #{bookId}
+    </select>
+
+    <select id="selectItemsByBookId" resultType="com.team.five.dto.BookItemDto">
+        SELECT item_id as itemId, book_id as bookId, status
+        FROM BOOK_ITEM
+        WHERE book_id = #{bookId}
+    </select>
+
+
+</mapper>
