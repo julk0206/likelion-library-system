@@ -10,9 +10,20 @@
         <result property="isbn" column="isbn" />
     </resultMap>
 
-    <select id="findAllBooks" resultMap="BookResultMap">
+    <select id="selectAllBooks" resultMap="BookResultMap">
         SELECT BOOK_ID, TITLE, AUTHOR, GENRE_CODE, isbn
         FROM BOOK
+    </select>
+
+    <select id="selectBooksByCondition" resultMap="BookResultMap">
+        SELECT * FROM BOOK
+        <where>
+            ${type} LIKE '%' || #{value} || '%'
+        </where>
+    </select>
+
+    <select id="findBookDetail" resultMap="BookResultMap">
+
     </select>
 
 
