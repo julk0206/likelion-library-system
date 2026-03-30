@@ -23,4 +23,14 @@ public class UsersService {
         }
     }
 
+
+    // 사용자 추가
+    public int insertUser(UsersDto usersDto){
+        try(SqlSession session = manager.openSession(true)){
+            int result = 0;
+            UsersMapper mapper = session.getMapper(UsersMapper.class);
+            result = mapper.insertUser(usersDto);
+            return result;
+        }
+    }
 }

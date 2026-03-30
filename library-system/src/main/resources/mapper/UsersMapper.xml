@@ -9,4 +9,8 @@
         WHERE USER_ID = #{userId}
     </select>
 
+    <insert id="insertUser" parameterType="com.team.five.dto.UsersDto">
+        INSERT INTO USERS (NAME, AGE, JOIN_DATE)
+            VALUES (#{name}, #{age}, SYSTIMESTAMP)
+    </insert>
 </mapper>
