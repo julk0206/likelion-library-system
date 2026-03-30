@@ -19,5 +19,6 @@
   
 <mappers>
     <mapper resource="mapper/BookMapper.xml"></mapper>
+    <mapper resource="mapper/UsersMapper.xml"></mapper>
 </mappers>
 </configuration>
