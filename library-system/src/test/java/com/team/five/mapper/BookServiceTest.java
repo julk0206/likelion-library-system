@@ -91,4 +91,12 @@ public class BookServiceTest {
         bookService.getBookDetail(invalidId);
     }
 
+    @Test
+    public void isAvailableTest() {
+        int validId = 1;
+
+        BookDto book = bookService.getBookDetail(validId);
+
+        assertTrue(book.isAvailable());
+    }
 }
