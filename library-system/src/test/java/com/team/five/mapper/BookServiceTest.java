@@ -2,6 +2,7 @@ package com.team.five.mapper;
 
 import com.team.five.dto.BookDto;
 import com.team.five.dto.BookItemDto;
+import com.team.five.dto.response.BookRankResponse;
 import com.team.five.service.BookService;
 import org.junit.Before;
 import org.junit.Test;
@@ -98,5 +99,12 @@ public class BookServiceTest {
         BookDto book = bookService.getBookDetail(validId);
 
         assertTrue(book.isAvailable());
+    }
+
+//    @Test
+    public void getRankTest() {
+        List<BookRankResponse> rankResponseList = bookService.getBookRank();
+
+        assertEquals(rankResponseList.size(), 10);
     }
 }
