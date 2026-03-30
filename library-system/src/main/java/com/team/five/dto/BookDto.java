@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.List;
+
 @Getter
 @Setter
 @ToString
@@ -17,4 +19,6 @@ public class BookDto {
     private String author;
     private int genreCode;
     private String isbn;
+
+    private List<BookItemDto> items;
 }
