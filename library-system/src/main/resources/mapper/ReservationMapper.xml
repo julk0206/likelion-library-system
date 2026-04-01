@@ -29,4 +29,10 @@
             ORDER BY RESERVATION_DATE ASC
     </select>
 
+    <!-- 3. 예약 취소 -->
+    <delete id="deleteReservation">
+        DELETE FROM RESERVATION
+        WHERE RESERVATION_ID = #{reservationId}
+    </delete>
+    
 </mapper>

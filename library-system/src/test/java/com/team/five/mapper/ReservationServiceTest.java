@@ -39,5 +39,11 @@ public class ReservationServiceTest {
         assertTrue(result.size() >= 1);
     }
 
+    @Test
+    public void deleteReservationTest(){
+        int result = reservationService.deleteReservation(1);
+        assertEquals(1, result);
+    }
+
 }
 

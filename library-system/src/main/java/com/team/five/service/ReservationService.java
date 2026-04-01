@@ -43,4 +43,12 @@ public class ReservationService {
         }
     }
 
+    // 3. 예약 취소
+    public int deleteReservation(int reservationId){
+        try(SqlSession session = manager.openSession()){
+            ReservationMapper mapper = session.getMapper(ReservationMapper.class);
+            return mapper.deleteReservation(reservationId);
+        }
+    }
+    
 }
