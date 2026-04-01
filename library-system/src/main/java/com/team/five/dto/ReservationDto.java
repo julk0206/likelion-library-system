@@ -12,10 +12,11 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class Reservation {
+public class ReservationDto {
 
     private int reservationId;
     private int userId;
     private int bookId;
     private String reservationDate;
+    private String status;
 }

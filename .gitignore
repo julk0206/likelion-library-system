@@ -3,6 +3,7 @@
 /Servers/
 /.metadata/
 **/oracle.properties
+*.sql
 
 # Created by https://www.toptal.com/developers/gitignore/api/java,eclipse,dbeaver,maven
 # Edit at https://www.toptal.com/developers/gitignore?templates=java,eclipse,dbeaver,maven

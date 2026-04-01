@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team.five.mapper.ReservationMapper">
+
+    <!-- 1. 예약 등록 -->
+    <insert id="insertReservation" parameterType="com.team.five.dto.ReservationDto">
+        INSERT INTO RESERVATION (
+            USER_ID, BOOK_ID, RESERVATION_DATE, STATUS
+        ) VALUES (
+            #{userId}, #{bookId}, SYSDATE, '예약진행중'
+        )
+    </insert>
+
+    <!-- 2-1. 예약 조회 (사용자별) -->
+    <select id="selectReservationsByUserId" resultType="com.team.five.dto.ReservationDto">
+        SELECT RESERVATION_ID, USER_ID, BOOK_ID, RESERVATION_DATE, STATUS
+            FROM RESERVATION
+            WHERE USER_ID = #{userId}
+            ORDER BY RESERVATION_DATE DESC
+    </select>
+
+    <!-- 2-2. 예약 조회 (책별 - 우선순위) -->
+    <select id="selectReservationsByBookId" resultType="com.team.five.dto.ReservationDto">
+        SELECT RESERVATION_ID, USER_ID, BOOK_ID, RESERVATION_DATE, STATUS
+            FROM RESERVATION
+            WHERE BOOK_ID = #{bookId}
+            ORDER BY RESERVATION_DATE ASC
+    </select>
+
+</mapper>
