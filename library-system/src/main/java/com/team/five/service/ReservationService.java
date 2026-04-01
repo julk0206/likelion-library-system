@@ -50,5 +50,29 @@ public class ReservationService {
             return mapper.deleteReservation(reservationId);
         }
     }
+
+    // 4. 예약 존재 여부 확인
+    public boolean hasReservationByBookId(int bookId){
+        try(SqlSession session = manager.openSession()){
+            ReservationMapper mapper = session.getMapper(ReservationMapper.class);
+            return mapper.existsReservationByBookId(bookId);
+        }
+    }
+
+    // 5. 예약자 수 확인
+    public int countReservationsByBookId(int bookId){
+        try(SqlSession session = manager.openSession()){
+            ReservationMapper mapper = session.getMapper(ReservationMapper.class);
+            return mapper.countReservationsByBookId(bookId);
+        }
+    }
+
+    // 6. 예약 존재 여부 확인 (사용자별)
+    public boolean hasReservationByUserId(int userId){
+        try(SqlSession session = manager.openSession()){
+            ReservationMapper mapper = session.getMapper(ReservationMapper.class);
+            return mapper.existsReservationByUserId(userId);
+        }
+    }
     
 }

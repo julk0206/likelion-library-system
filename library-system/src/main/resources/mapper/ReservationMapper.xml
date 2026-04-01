@@ -34,5 +34,29 @@
         DELETE FROM RESERVATION
         WHERE RESERVATION_ID = #{reservationId}
     </delete>
+
+    <!-- 4. 예약 존재 여부 확인 (책별) -->
+    <select id="existsReservationByBookId" resultType="boolean">
+        SELECT CASE WHEN COUNT(*) > 0 THEN 1 ELSE 0 END
+            FROM RESERVATION
+            WHERE BOOK_ID = #{bookId}
+            AND STATUS = '예약진행중'
+    </select>
+
+    <!-- 5. 책별 예약 수 -->
+    <select id="countReservationsByBookId" resultType="int">
+        SELECT COUNT(*)
+            FROM RESERVATION
+            WHERE BOOK_ID = ${bookId}
+            AND STATUS = '예약진행중'
+    </select>
+
+    <!-- 6. 예약 존재 여부 확인 (사용자별) -->
+    <select id="existsReservationByUserId" resultType="boolean">
+        SELECT CASE WHEN COUNT(*) > 0 THEN 1 ELSE 0 END
+            FROM RESERVATION
+            WHERE USER_ID = #{userid}
+            AND STATUS = '예약진행중'
+    </select>
     
 </mapper>

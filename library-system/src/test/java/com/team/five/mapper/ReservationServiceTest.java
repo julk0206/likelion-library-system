@@ -45,5 +45,25 @@ public class ReservationServiceTest {
         assertEquals(1, result);
     }
 
+    @Test
+    public void hasReservationByBookIdTest(){
+        reservationService.insertReservation(1, 1);
+        boolean result = reservationService.hasReservationByBookId(1);
+        assertTrue(result);
+    }
+
+    @Test
+    public void countReservationsByBookIdTest(){
+        reservationService.insertReservation(1, 1);
+        int result = reservationService.countReservationsByBookId(1);
+        assertTrue(result >= 1);
+    }
+
+    @Test
+    public void hasReservationByUserIdTest(){
+        reservationService.insertReservation(1, 1);
+        boolean result = reservationService.hasReservationByUserId(1);
+        assertTrue(result);
+    }
 }
 
