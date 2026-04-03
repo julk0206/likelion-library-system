@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- TODO 004 로그 처리를 위한 logback xml 파일 작성 -->
+<configuration scan="true">
+
+	<!-- property 변수처럼 사용 -->
+	
+	<!-- 물리적으로 로그파일이 저장된 경로 (절대경로) -->
+	<property name="LOG_PATH" value="./logs" />
+	<!-- 로그 파일의 이름 -->
+	<property name="LOG_FILE_NAME" value="mybatis_join" />
+	<!-- 로그 출력 모양(패턴) -->
+	<property name="LOG_PATTERN"
+		value="%-5level %d{yy-MM-dd HH:mm:ss}[%thread] [%logger{0}:%line] - %msg%n" />
+
+	<!-- 
+		로그 레벨 : 개발할 때는 모두ㅡ 보여주는게 좋고, 배포 때는 치명적인 것만 로그를 보는게 좋다.
+		1) Fatal : 
+		2) Error : 오류 메시지
+		3) Warn : 경고성 메시지
+		4) Info : 정보성 메시지
+		5) Debug : 디버깅 하기 위한 메시지
+		6) Trace : 완전 상세 메시지 표시
+		로그레벨 - Error > Warn > Info > Debug > Trace
+		아래에서는 INFO로 설정하면, 이 경우에는 INFO보다 아래 있는 Debug와 Trace를 메시지는 표시하지 않음
+		
+	 -->
+	<property name="LOG_LEVEL" value="INFO" />
+
+	<!-- Console에 출력 셋팅 -->
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<Pattern>
+				[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} : %30logger{5} - %msg%n
+			</Pattern>
+		</layout>
+	</appender>
+
+	<!-- File에 출력 셋팅 -->
+	<appender name="FILE"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+		<file>${LOG_PATH}/${LOG_FILE_NAME}.log</file>
+
+		<!-- 출력 패턴 정의 -->
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<pattern>${LOG_PATTERN}</pattern>
+		</encoder>
+
+		<!-- Rolling 정책 : 하루에 한 번씩 생성될 파일의 이름, 파일의 크기 -->
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			
+			<!-- log 파일로만 만들어짐, .gz .zip으로 선언하면 자동으로 일자별로 로그를 압축 -->
+			<fileNamePattern>${LOG_PATH}/${LOG_FILE_NAME}.%d{yyyy-MM-dd}_%i.log</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<!-- 파일당 최고 용량 kb, mb, gb -->
+				<maxFileSize>10MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			
+			<!-- 일자별로 로그파일 최대 보관주기(~일 기준), 해당 설정일 이상의 파일은 자동으로 삭제-->
+			<maxHistory>30</maxHistory>
+
+		</rollingPolicy>
+	</appender>
+
+	<!-- 
+		jdbc 로그( PreparedStatement SQL문, ResultSet 결과, Connection 연결 정보) 출력될 패키지를 작성해 줘야 한다.
+		=> 선택적으로 로그를 출력하기 위함, 삭제를 위해서 OFF를 함
+		ex) ELK(ElasticSearch Logstash Kivana) : 로그분석 관제 시스템
+	 -->
+		<logger name="jdbc.sqlonly" level="OFF" />
+		<logger name="jdbc.sqltiming" level="OFF" />
+		<logger name="jdbc.resultsettable" level="OFF" />
+		<logger name="jdbc.audit" level="OFF" />
+		<logger name="jdbc.resultset" level="OFF" />
+		<logger name="jdbc.connection" level="OFF" />
+		<logger name="org.mybatis" level="OFF" />
+		<logger name="org.springframework" level="OFF" />
+		<logger name="com.min.edu.model.mapper" level="OFF" />
+		<logger name="ch.qos.logback" level="OFF"/>
+
+
+	<!-- appender-ref는 위에서 선언한 Console, File을 선택해서 로그를 출력하도록 만들어줌 -->
+	<!-- 로그 전역 셋팅 -->
+	<root level="${LOG_LEVEL}">
+		<!-- 위에서 설정한 콘솔 로그를 추가하겠다. -->
+		<appender-ref ref="CONSOLE" />
+		<!-- 위에서 설정한 파일 로그를 추가하겠다. -->
+		<appender-ref ref="FILE" />
+	</root>
+</configuration>

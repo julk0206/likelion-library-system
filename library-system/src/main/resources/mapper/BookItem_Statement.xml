@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team.five.mapper.BookItemMapper">
+
+	<resultMap id="bookItemMap" type="com.team.five.dto.BookItemDto">
+	    <id property="itemId" column="ITEM_ID"/>
+	    <result property="bookId" column="BOOK_ID"/>
+	    <result property="status" column="STATUS"/>
+	</resultMap>
+
+
+	<sql id="selectAllBookItems">
+		SELECT *
+			FROM BOOK_ITEM
+	</sql>
+	
+	<select id="selectAllBookItem" resultMap="bookItemMap">
+		<include refid="selectAllBookItems" />
+	</select>
+	
+	<select id="selectAvailableBookItems" resultMap="bookItemMap">
+		<include refid="selectAllBookItems" />
+		WHERE STATUS = '대여가능'
+	</select>
+	
+	<select id="isBookAvailable" resultType="int">
+	    SELECT COUNT(*)
+	    FROM BOOK_ITEM bi JOIN BOOK b 
+	    ON bi.BOOK_ID = b.BOOK_ID
+	    WHERE b.TITLE = #{title}
+	      AND bi.STATUS = '대여가능'
+	</select>
+
+	
+</mapper>
