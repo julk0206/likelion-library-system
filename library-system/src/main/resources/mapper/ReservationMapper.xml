@@ -47,7 +47,7 @@
     <select id="countReservationsByBookId" resultType="int">
         SELECT COUNT(*)
             FROM RESERVATION
-            WHERE BOOK_ID = ${bookId}
+            WHERE BOOK_ID = #{bookId}
             AND STATUS = '예약진행중'
     </select>
 
@@ -55,7 +55,7 @@
     <select id="existsReservationByUserId" resultType="boolean">
         SELECT CASE WHEN COUNT(*) > 0 THEN 1 ELSE 0 END
             FROM RESERVATION
-            WHERE USER_ID = #{userid}
+            WHERE USER_ID = #{userId}
             AND STATUS = '예약진행중'
     </select>
     
