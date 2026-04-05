@@ -59,4 +59,12 @@
             AND STATUS = '예약진행중'
     </select>
     
+    <!-- 7. 예약 중복 확인 -->
+    <select id="existsReservationByUserIdBookId" resultType="boolean">
+        SELECT CASE WHEN COUNT(*) > 0 THEN 1 ELSE 0 END
+            FROM RESERVATION
+            WHERE USER_ID = #{userId}
+            AND BOOK_ID = #{bookId}
+            AND STATUS = '예약진행중'
+    </select>
 </mapper>

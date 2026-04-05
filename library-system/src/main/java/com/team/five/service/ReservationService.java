@@ -18,6 +18,11 @@ public class ReservationService {
 
     // 1. 예약 등록
     public int insertReservation(int userId, int bookId) {
+
+        if (hasReservationByUserIdBookId(userId, bookId)) {
+            throw new RuntimeException("이미 예약한 도서입니다.");
+        }
+        
         try (SqlSession session = manager.openSession(false)){
             ReservationMapper mapper = session.getMapper(ReservationMapper.class);
             ReservationDto dto = new ReservationDto();
@@ -79,4 +84,14 @@ public class ReservationService {
         }
     }
     
+    // 7. 중복 예약 확인
+    public boolean hasReservationByUserIdBookId(int userId, int bookId){
+        try(SqlSession session = manager.openSession()){
+            ReservationMapper mapper = session.getMapper(ReservationMapper.class);
+            ReservationDto dto = new ReservationDto();
+            dto.setUserId(userId);
+            dto.setBookId(bookId);
+            return mapper.existsReservationByUserIdBookId(dto);
+        }
+    }
 }

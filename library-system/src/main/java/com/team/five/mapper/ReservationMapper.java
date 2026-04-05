@@ -19,5 +19,6 @@ public interface ReservationMapper {
     int countReservationsByBookId(int bookId);
     // 6. 예약 존재 여부 확인 (사용자별)
     boolean existsReservationByUserId(int userId);
-
+    // 7. 중복 예약 확인 (등록 전)
+    boolean existsReservationByUserIdBookId(ReservationDto reservation);
 }

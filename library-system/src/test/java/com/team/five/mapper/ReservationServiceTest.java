@@ -65,5 +65,12 @@ public class ReservationServiceTest {
         boolean result = reservationService.hasReservationByUserId(1);
         assertTrue(result);
     }
+
+    @Test
+    public void hasReservationByUserIdBookId(){
+        reservationService.insertReservation(1, 1);
+        boolean result = reservationService.hasReservationByUserIdBookId(1, 1);
+        assertTrue(result);
+    }
 }
 
