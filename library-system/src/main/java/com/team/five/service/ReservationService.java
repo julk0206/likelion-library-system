@@ -18,13 +18,17 @@ public class ReservationService {
 
     // 1. 예약 등록
     public int insertReservation(int userId, int bookId) {
-        try (SqlSession session = manager.openSession(true)){
+        try (SqlSession session = manager.openSession(false)){
             ReservationMapper mapper = session.getMapper(ReservationMapper.class);
             ReservationDto dto = new ReservationDto();
             dto.setUserId(userId);
             dto.setBookId(bookId);
+            session.commit();
             return mapper.insertReservation(dto);
+        } catch(Exception e) {
+            throw new RuntimeException("예약 등록 실패", e);
         }
+        
     }
 
     // 2-1. 예약 조회 (사용자별)
@@ -45,7 +49,7 @@ public class ReservationService {
 
     // 3. 예약 취소
     public int deleteReservation(int reservationId){
-        try(SqlSession session = manager.openSession()){
+        try(SqlSession session = manager.openSession(true)){
             ReservationMapper mapper = session.getMapper(ReservationMapper.class);
             return mapper.deleteReservation(reservationId);
         }
