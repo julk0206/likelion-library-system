@@ -20,5 +20,8 @@
 <mappers>
     <mapper resource="mapper/BookMapper.xml"></mapper>
     <mapper resource="mapper/UsersMapper.xml"></mapper>
+    <mapper resource="mapper/ReservationMapper.xml"></mapper>
+	<mapper resource="mapper/BookItem_Statement.xml"/>
+	<mapper resource="mapper/Rent_Statement.xml"/>
 </mappers>
 </configuration>

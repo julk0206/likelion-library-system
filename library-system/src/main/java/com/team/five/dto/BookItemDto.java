@@ -13,7 +13,7 @@ import lombok.ToString;
 @AllArgsConstructor
 public class BookItemDto {
 
-    private int itemId;
+	private int itemId;
     private int bookId;
     private String status;
 }

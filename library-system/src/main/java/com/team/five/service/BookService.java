@@ -3,6 +3,7 @@ package com.team.five.service;
 import com.team.five.config.SqlSessionFactoryManager;
 import com.team.five.dto.BookDto;
 import com.team.five.dto.BookItemDto;
+import com.team.five.dto.response.BookRankResponse;
 import com.team.five.mapper.BookMapper;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -56,6 +57,13 @@ public class BookService {
         try (SqlSession session = factory.openSession()) {
             BookMapper mapper = session.getMapper(BookMapper.class);
             return mapper.selectItemsByBookId(bookId);
+        }
+    }
+
+    public List<BookRankResponse> getBookRank() {
+        try (SqlSession session = factory.openSession()) {
+            BookMapper mapper = session.getMapper(BookMapper.class);
+            return mapper.selectTop10Books();
         }
     }
 

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="com.team.five.mapper.RentMapper">
+
+	<resultMap id="rentMap" type="com.team.five.dto.RentDto">
+	    <id property="rentId" column="RENT_ID"/>
+	    <result property="userId" column="USER_ID"/>
+	    <result property="itemId" column="ITEM_ID"/>
+	    <result property="rentDate" column="RENT_DATE"/>
+	    <result property="dueDate" column="DUE_DATE"/>
+	    <result property="returnDate" column="RETURN_DATE"/>
+	    <result property="bookTitle" column="TITLE"/> <!-- 추가 -->
+	</resultMap>
+	
+
+	<select id="selectAllRents" resultMap="rentMap">
+		SELECT *
+			FROM RENT
+	</select>
+	
+	<select id="selectRentsByUserId" resultMap="rentMap">
+		SELECT r.RENT_ID, b.TITLE, r.RENT_DATE, r.RETURN_DATE, r.USER_ID
+			FROM RENT r
+			JOIN BOOK_ITEM bi ON r.ITEM_ID = bi.ITEM_ID
+			JOIN BOOK b ON bi.BOOK_ID = b.BOOK_ID
+			WHERE r.USER_ID = #{userId}
+	</select>
+	
+
+</mapper>

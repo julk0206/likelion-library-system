@@ -48,5 +48,14 @@
         WHERE book_id = #{bookId}
     </select>
 
-
+    <select id="selectTop10Books" resultType="com.team.five.dto.response.BookRankResponse">
+        SELECT * FROM (SELECT B.book_id as bookId, B.title,
+        B.author, COUNT(R.rent_id) AS rentCount
+        FROM RENT R
+        JOIN BOOK_ITEM I ON R.item_id = I.item_id
+        JOIN BOOK B ON I.book_id = B.book_id
+        GROUP BY B.book_id, B.title, B.author
+        ORDER BY rentCount DESC)
+        WHERE ROWNUM &lt;= 10
+    </select>
 </mapper>

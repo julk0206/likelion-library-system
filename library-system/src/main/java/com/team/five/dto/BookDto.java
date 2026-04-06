@@ -19,6 +19,14 @@ public class BookDto {
     private String author;
     private int genreCode;
     private String isbn;
-
     private List<BookItemDto> items;
+
+    public boolean isAvailable() {
+        if (items == null || items.isEmpty()) {
+            return false;
+        }
+
+        return items.stream()
+            .anyMatch(item -> "대여가능".equalsIgnoreCase(item.getStatus()));
+    }
 }
