@@ -15,37 +15,102 @@ SELECT * FROM BOOK_ITEM;
 
 -- 사용 테이블 : RENT, BOOK_ITEM, RESERVATION -
 
--- 반납 처리 (RENT.RETURN_DATE 업데이트)
--- RENT.STATUS 업데이트 (반납 완료/연체 여부 판단)
--- BOOK ITEM.STATUS '대여가능' 변경
--- 반납된 BOOK ID 기준 예약 목록 조회
--- 예약 우선순위 판단 (RESERVATION_DATE 오름차순)
--- 우선순위 1순위 예약에 대해 자동 RENT 생성
---BOOK_ITEM.STATUS -'대여중' 변경 (자동 대출)
--- RESERVATION.STATUS - '대출완료' 변경
--- 연체 도서 조회 (DUE_DATE 초과 미반납)
+-- [Action_10 - 회원의 책 반납]
+-- [x] 1.반납 처리 (RENT.RETURN_DATE 업데이트)
+-- [ ] 2.RENT.STATUS(x)  업데이트 (반납 완료/연체 여부 판단) -> RENT_STATUS 추가 여부 확인
+-- [x] 3.BOOK_ITEM.STATUS '대여가능' 변경
 
+-- [Feature_11 - 예약 존재]
+-- [x] 1.반납된 BOOK ID 기준 예약 목록 조회
+-- [x] 2.예약 우선순위 판단 (RESERVATION_DATE 오름차순)
+-- [x] 3.우선순위 1순위 예약에 대해 자동 RENT 생성
+-- [x] 4.BOOK_ITEM.STATUS -'대여중' 변경 (자동 대출)
+-- [x] 5.RESERVATION.STATUS - '대출완료' 변경
+
+-- [Action_2 - 연체 도서 조회]
+-- [x]연체 도서 조회 (DUE_DATE 초과 미반납)
+
+
+-- 정리 Action => 유저 책 반납시
+-- 해당 Book_id 에 대해 예약이 있으면? => 다음 사람에게 자동 대출(BOOK_ITEM.status 가 '대여가능' -> '대여중') 
+-- 해당 BooK_id 에 대해 예약이 없으면? => 반납 처리(update RENT status, return_date)
 
 
 
 SELECT * FROM RENT;
 
--- 입력 : name, book_id
-
--- 1. 반납처리
+/* -------------------Action_10--------------- */
+-- 입력 : userId, bookId
+-- # issue1 : 입력을 [name, title] 로 생각하면 RENT에서 RENT_ID UNIQUE 식별이 안됨
+--          - 최소조건 : userId 또는 itemId 둘 중 하나라도 있어야 함
+--          - 예를 들어) 같은 이름을 가진 사람이 같은 제목의 책을 빌린 상태에서 반납
+-- 1.반납 처리
+-- 1-1 userID와 bookId 를 통해 RENT_ID 확인
+SELECT RENT_ID
+  FROM RENT r 
+  JOIN BOOK_ITEM bi ON r.ITEM_ID = bi.ITEM_ID
+ WHERE r.USER_ID = #{userId}
+   AND bi.BOOK_ID = #{bookId};-- RESULT : RENT_ID_RESULT
+-- 1-2 해당 REND_ID 를 통해 RENT 테이블 업데이트
 UPDATE RENT
-   SET RETURN_DATE = sysdate;
+   SET RETURN_DATE = sysdate
+ WHERE RENT_ID = v$RENT_ID_RESULT;
 
+-- 3.BOOK_ITEM.STATUS 대여 가능 변경
+-- 3-1 RENT_ID 를 통해 다시 ITEM_ID 확인
+SELECT ITEM_ID
+  FROM RESERVATION
+ WHERE RENT_ID = v$RENT_ID_RESULT; -- REULST : ITEM_ID_RESULT
 
--- 3. 책 ID로 대여 toggle;
--- 대여중 -> 대여 가능
-UPDATE RENT
+-- 3-2 ITEM_ID를 통해 BOOK_ITEM 업데이트
+UPDATE BOOK_ITEM
    SET STATUS = '대여가능'
- WHERE STATUS = '대여중' AND BOOK_ID = #{BOOK_ID};
--- 대여 가능 -> 대여중
-UPDATE RENT
+ WHERE STATUS = '대여중' AND ITEM_ID = v$ITEM_ID_RESULT
+
+/* -------------------Feature_11--------------- */
+-- 1. 2, 반납된 BOOK_ID 기준 예약 목록 조회 -> 수연님 구현 mapper id =selectReservationsByBookId
+SELECT USER_ID , BOOK_ID
+  FROM (SELECT USER_ID , BOOK_ID
+             , ROW_NUMBER() OVER(PARTITION BY SYSDATE ORDER BY SYSDATE ASC) RN
+          FROM RESERVATION
+         WHERE BOOK_ID = #{bookId})
+ WHERE RN = 1; -- RESULT : RESERVATION_ID, USER_ID_RESULT , BOOK_ID_RESULT
+
+-- 3.우선순위 1순위 예약에 대해 자동 RENT 생성
+-- 3-1 BOOK_ID_RESULT 를 통해 ITEM_ID_RESULT 생성 -> Action_10_3-1 결과 : v$ITEM_ID_RESULT 와 동일해야한다
+SELECT ITEM_ID
+  FROM BOOK_ITEM
+ WHERE STATUS = '대여가능' 
+   AND BOOK_ID = v$BOOK_ID_RESULT
+   AND ROWNUM=1; -- RESULT : v$ITEM_ID_RESULT_2
+-- 3-2. v$USER_ID_RESULT , v$ITEM_ID_RESULT_2 를 통해 RENT 생성
+-- DUE_DATE 는 1주일로 한다.
+INSERT INTO RENT(USER_ID , ITEM_ID , DUE_DATE)
+    VALUES(v$USER_ID_RESULT, v$ITEM_ID_RESULT_2, SYSDATE+7);
+
+-- 4. BOOK_ITEM.STATUS 업데이트
+UPDATE BOOK_ITEM
    SET STATUS = '대여중'
- WHERE STATUS = '대여가능' AND BOOK_ID = #{BOOK_ID};
+ WHERE STATUS = '대여가능' AND v$ITEM_ID_RESULT_2;
+
+-- 5.RESERVATION.STATUS - '대출완료' 변경
+UPDATE RESERVATION
+   SET STATUS = '대출완료'
+ WHERE STATUS = '예약진행중' AND RESERVATION_ID = v$RESERVATION_ID_RESULT;
+
+
+/* -------------------Action_20--------------- */
+-- input : 없음
+-- output : TITLE, ITEM_ID , 연체일, NAME , USER_ID
+SELECT b.TITLE, bi.ITEM_ID, u.NAME, u.USER_ID
+     , TRUNC(SYSDATE - r.DUE_DATE) || ' 일 연체중' DEALY_DATE
+  FROM RENT r 
+  JOIN BOOK_ITEM bi ON r.ITEM_ID = bi.ITEM_ID
+  JOIN BOOK b ON r.USER_ID = u.USER_ID
+  JOIN USERS u ON bi.BOOK_ID = b.BOOK_ID
+ WHERE SYSDATE > DUE_DATE
+   AND RETURN_DATE IS NULL;
+
 
 
 /* ------------------------------------------ */
