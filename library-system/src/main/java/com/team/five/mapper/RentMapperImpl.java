@@ -25,12 +25,38 @@ public class RentMapperImpl implements IRentMapper {
 		return lists;
 	}
 	
+	// 대출 insert
+	@Override
+	public int insertRent(RentDto inDto) {
+		log.info("대출 입력 값 : {} ", inDto);
+		int cnt = 0;
+		SqlSession session = manager.openSession(false);
+		try {
+			cnt = session.insert(NS+"insertRent", inDto);
+			return cnt;
+		} finally {
+			session.close();
+		}
+		
+	}
+	
+	// 사용자 대출 내역 조회
 	@Override
 	public List<RentDto> selectRentsByUserId(int userId) {
-		log.info("userId 잘 들어갔어요~",userId);
+		log.info("userId : {}",userId);
 		List<RentDto> lists = null;
 		SqlSession session = manager.openSession();
 		lists = session.selectList(NS+"selectRentsByUserId", userId);
+		return lists;
+	}
+	
+	// 대출 상태 조회
+	@Override
+	public List<RentDto> selectAllRentsWithBook() {
+		log.info("rent 전체 조회와 book title");
+		List<RentDto> lists = null;
+		SqlSession session = manager.openSession();
+		lists = session.selectList(NS+"selectAllRentsWithBook");
 		return lists;
 	}
 

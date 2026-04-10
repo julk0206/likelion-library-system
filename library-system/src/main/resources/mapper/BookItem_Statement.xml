@@ -9,21 +9,7 @@
 	    <result property="bookId" column="BOOK_ID"/>
 	    <result property="status" column="STATUS"/>
 	</resultMap>
-
-
-	<sql id="selectAllBookItems">
-		SELECT *
-			FROM BOOK_ITEM
-	</sql>
 	
-	<select id="selectAllBookItem" resultMap="bookItemMap">
-		<include refid="selectAllBookItems" />
-	</select>
-	
-	<select id="selectAvailableBookItems" resultMap="bookItemMap">
-		<include refid="selectAllBookItems" />
-		WHERE STATUS = '대여가능'
-	</select>
 	
 	<select id="isBookAvailable" resultType="int">
 	    SELECT COUNT(*)
@@ -32,6 +18,24 @@
 	    WHERE b.TITLE = #{title}
 	      AND bi.STATUS = '대여가능'
 	</select>
+
+	<select id="selectBestItem" resultType="int">
+	    SELECT bi.ITEM_ID
+	    FROM BOOK_ITEM bi
+	    JOIN BOOK b ON bi.BOOK_ID = b.BOOK_ID
+	    LEFT JOIN RENT r ON bi.ITEM_ID = r.ITEM_ID
+	    WHERE b.TITLE = #{title}
+	      AND bi.STATUS = '대여가능'
+	    GROUP BY bi.ITEM_ID
+	    ORDER BY COUNT(r.RENT_ID) ASC, bi.ITEM_ID ASC
+	    FETCH FIRST 1 ROW ONLY
+	</select>
+
+	<update id="updateStatus" parameterType="java.util.Map">
+		UPDATE BOOK_ITEM
+		SET STATUS = #{status}
+		WHERE ITEM_ID = #{itemId}
+	</update>
 
 	
 </mapper>

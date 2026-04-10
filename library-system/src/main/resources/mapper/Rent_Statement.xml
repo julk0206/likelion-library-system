@@ -15,18 +15,42 @@
 	    <result property="bookTitle" column="TITLE"/> <!-- 추가 -->
 	</resultMap>
 	
+	<sql id="rentJoin">
+			JOIN BOOK_ITEM bi ON r.ITEM_ID = bi.ITEM_ID
+			JOIN BOOK b ON bi.BOOK_ID = b.BOOK_ID
+	</sql>
+	
 
 	<select id="selectAllRents" resultMap="rentMap">
 		SELECT *
-			FROM RENT
+			FROM RENT 
 	</select>
+	
+	
+	<insert id="insertRent">
+		INSERT INTO RENT(USER_ID, ITEM_ID, RENT_DATE, DUE_DATE, RETURN_DATE)
+		VALUES (#{userId}, #{itemId}, SYSDATE, SYSDATE + 7, NULL)
+	</insert>
 	
 	<select id="selectRentsByUserId" resultMap="rentMap">
 		SELECT r.RENT_ID, b.TITLE, r.RENT_DATE, r.RETURN_DATE, r.USER_ID
 			FROM RENT r
-			JOIN BOOK_ITEM bi ON r.ITEM_ID = bi.ITEM_ID
-			JOIN BOOK b ON bi.BOOK_ID = b.BOOK_ID
+			<include refid="rentJoin" />
 			WHERE r.USER_ID = #{userId}
+	</select>
+	
+	<update id="updateReturnDate">
+		UPDATE RENT
+			SET RETURN_DATE = SYSDATE
+			WHERE USER_ID = #{userId}
+			  AND ITEM_ID = #{itemId}
+			  AND RETURN_DATE IS NULL
+	</update>
+	
+	<select id="selectAllRentsWithBook" resultMap="rentMap">
+		SELECT r.RENT_ID, b.TITLE, r.RENT_DATE, r.RETURN_DATE, r.USER_ID, r.ITEM_ID, r.DUE_DATE
+			FROM RENT r
+			<include refid="rentJoin" />
 	</select>
 	
 
