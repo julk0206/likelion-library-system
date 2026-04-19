@@ -16,6 +16,7 @@ public class UsersDto {
     private int userId;
     private String name;
     private int age;
+    private String password;
     private String joinDate;
 
 }
