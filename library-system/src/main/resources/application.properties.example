@@ -1,0 +1,9 @@
+# DataSource
+spring.datasource.url=jdbc:oracle:thin:@localhost:1521:xe
+spring.datasource.username=DB ID
+spring.datasource.password=DB 비번
+spring.datasource.driver-class-name=oracle.jdbc.OracleDriver
+
+# MyBatis
+mybatis.mapper-locations=classpath:mapper/*.xml
+mybatis.config-location=classpath:mybatis_config.xml
