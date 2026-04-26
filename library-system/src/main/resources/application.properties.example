@@ -7,3 +7,6 @@ spring.datasource.driver-class-name=oracle.jdbc.OracleDriver
 # MyBatis
 mybatis.mapper-locations=classpath:mapper/*.xml
 mybatis.config-location=classpath:mybatis_config.xml
+
+# JWT
+jwt.secret=ZmFrZXNlY3JldGtleWZvcmxpYnJhcnlzeXN0ZW1qd3RhdXRo // 32byte 이상으로 랜덤 암호 키 생성, 실제 프로젝트에서는 git에 올리면 안됨!
