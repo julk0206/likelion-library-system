@@ -20,6 +20,8 @@
 
     <div class="rank-link">
         <a href="${pageContext.request.contextPath}/book/rank.do">🔥 인기 도서 TOP 10 보기</a>
+        &nbsp;|&nbsp;
+        <a href="${pageContext.request.contextPath}/reserve/list.do">📋 예약 목록 보기</a>
     </div>
 
     <div class="search-box">
