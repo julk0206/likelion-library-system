@@ -12,27 +12,28 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("*.do")
+@WebServlet("/book/*")
 public class BookController extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private BookService bookService = new BookService();
 
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
 
         String uri = request.getRequestURI();
         String contextPath = request.getContextPath();
-        String command = uri.substring(contextPath.length());
+        String command = uri.substring(contextPath.length()).replace("/book", "");
 
         try {
             switch (command) {
-                case "/book/list.do":
+                case "/list.do":
                     searchBookList(request, response);
                     break;
-                case "/book/detail.do":
+                case "/detail.do":
                     searchBookDetail(request, response);
                     break;
-                case "/book/rank.do":
+                case "/rank.do":
                     searchBookRank(request, response);
                     break;
                 default:
