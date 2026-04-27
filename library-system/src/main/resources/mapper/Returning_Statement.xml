@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team.five.mapper.ReturningMaperImpl">
+  <select id="getRentId"></select>
+
+  <update id="updateBookAsRetuning"></update>
+
+  <select id="getItemId"></select>
+
+  <update id="updateBookStatusToggle"></update>
+
+  <select id="getTopPriorityReservation"></select>
+
+  <update id="updateReservationAsRented"></update>
+
+  <insert id="insertRentRaw"></insert>
 
 
 </mapper>

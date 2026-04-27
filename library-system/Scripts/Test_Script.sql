@@ -115,14 +115,13 @@ UPDATE RESERVATION
 -- input : 없음
 -- output : TITLE, ITEM_ID , 연체일, NAME , USER_ID
 SELECT b.TITLE, bi.ITEM_ID, u.NAME, u.USER_ID
-     , TRUNC(SYSDATE - r.DUE_DATE) || ' 일 연체중' DEALY_DATE
+     , TRUNC(SYSDATE - r.DUE_DATE)  DELAY_DAYS
   FROM RENT r 
   JOIN BOOK_ITEM bi ON r.ITEM_ID = bi.ITEM_ID
-  JOIN BOOK b ON r.USER_ID = u.USER_ID
-  JOIN USERS u ON bi.BOOK_ID = b.BOOK_ID
- WHERE SYSDATE > DUE_DATE
-   AND RETURN_DATE IS NULL;
-
+  JOIN BOOK b ON b.BOOK_ID = bi.BOOK_ID
+  JOIN USERS u ON r.USER_ID = u.USER_ID
+ WHERE SYSDATE > r.DUE_DATE
+   AND bi.STATUS = '대여중'
 
 
 /* ------------------------------------------ */

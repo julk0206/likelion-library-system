@@ -1,10 +1,13 @@
 package com.team.five.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 import com.team.five.dto.BookItemDto;
 import com.team.five.dto.RentDto;
 import com.team.five.dto.ReservationDto;
+import com.team.five.dto.response.OverdueResponseDto;
 
 public interface IReturningMapper {
 
@@ -51,6 +54,7 @@ public interface IReturningMapper {
   public int updateBookStatusToggle(@Param("itemId") int itemId, boolean toggleOption);
 
   /**
+   * 수
    * BookId를 통해 해당 책의 가장 우선순위가 높은 사람의 userId와 해당 bookId를 가져옵니다.
    *
    * @param bookId -> int
@@ -78,4 +82,10 @@ public interface IReturningMapper {
    */
   public int updateReservationAsRented(@Param("reservationId") int reservationId);
 
+  /**
+   * 연체 정보를 모두 불러 옵니다.
+   *
+   * @return : List<{@link OverdueResponseDto}
+   */
+  public List<OverdueResponseDto> getOverdueInfo();
 }

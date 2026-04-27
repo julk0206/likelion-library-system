@@ -1,11 +1,13 @@
 
 package com.team.five.mapper;
 
+import java.util.List;
 import java.util.Map;
 
 import com.team.five.dto.BookItemDto;
 import com.team.five.dto.RentDto;
 import com.team.five.dto.ReservationDto;
+import com.team.five.dto.response.OverdueResponseDto;
 
 public class ReturningMapperImpl implements IReturningMapper {
 
@@ -49,6 +51,12 @@ public class ReturningMapperImpl implements IReturningMapper {
   public int insertRentRaw(int userId, int itemId) {
     // TODO Auto-generated method stub
     throw new UnsupportedOperationException("Unimplemented method 'insertRentRaw'");
+  }
+
+  @Override
+  public List<OverdueResponseDto> getOverdueInfo() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'getOverdueInfo'");
   }
 
 }
