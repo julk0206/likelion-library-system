@@ -47,21 +47,15 @@
 			<version>3.0.4</version>
 		</dependency>
 
-		<!-- Logback -->
-		<!-- Logback - classic -->
+		<!-- Logback - Spring Boot Parent가 호환 버전 자동 관리 -->
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
-			<version>1.4.14</version>
-			<scope>compile</scope>
 		</dependency>
 
-		<!-- Logback - core -->
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-core</artifactId>
-			<version>1.4.14</version>
-			<scope>compile</scope>
 		</dependency>
 
 		<!-- JUnit 4 -->
