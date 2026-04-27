@@ -41,6 +41,10 @@ public class SecurityConfig {
             // 추후에 새로운 url 추가 시 .requestMatchers(요청 주소).hasRole("USER") 또는 .requestMatchers(요청 주소).hasAuthority("ROLE_USER") 작성해주면 됨
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/users/login").permitAll()
+                .requestMatchers("/users/login.do").permitAll()
+                .requestMatchers("/users/register.do").permitAll()
+                .requestMatchers("/spring/users/login").permitAll()
+                .requestMatchers("/error").permitAll()
                 .anyRequest().authenticated())
 
             // JwtAuthenticationFilter를 UsernamePasswordAuthenticationFilter 전에 실행
