@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team.five.mapper.IReturningMapper">
+  <select id="getUnreturnedRentId" resultType="RentDto"> SELECT RENT_ID FROM RENT r JOIN BOOK_ITEM
+    bi on r.ITEM_ID = bi.ITEM_ID WHERE bi.STATUS = '대여중' AND r.USER_ID = #{userId} AND bi.BOOK_ID =
+    #{bookId} </select>
+
+  <update id="updateBookAsReturning"> UPDATE RENT SET RETURN_DATE = SYSDATE WHERE RENT_ID =
+    #{rentId} </update>
+
+  <select id="getRentedItemId" resultType="RentDto"> SELECT ITEM_ID FROM RENT WHERE RENT_ID =
+    #{rentId} </select>
+
+  <update id="updateBookStatus"> UPDATE BOOK_ITEM SET STATUS = #{status} WHERE ITEM_ID = #{itemId} </update>
+
+  <select id="getTopPriorityReservation" resultType="BookItemDto"> SELECT USER_ID, BOOK_ID,
+    RESERVATION_ID FROM RESERVATION WHERE BOOK_ID = #{bookId} AND STATUS = '예약진행중' ORDER BY
+    RESERVATION_DATE ASC FETCH FIRST 1 ROW ONLY </select>
+
+  <select id="getRentAvailableItemId" resultType="BookItemDto"> SELECT ITEM_ID FROM BOOK_ITEM WHERE
+    STATUS = '대여가능' AND BOOK_ID = #{bookId} AND ROWNUM = 1 </select>
+
+  <update id="updateReservationAsRented"> UPDATE RESERVATION SET STATUS = '대출완료' WHERE STATUS =
+    '예약진행중' AND RESERVATION_ID = #{reservationId} </update>
+
+  <insert id="insertRentRaw"> INSERT INTO RENT (USER_ID, ITEM_ID, DUE_DATE) VALUES (#{userId},
+    #{itemId}, SYSDATE+7) </insert>
+
+  <select id="getOverdueInfo">SELECT b.TITLE, bi.ITEM_ID, u.NAME, u.USER_ID, TRUNC(SYSDATE -
+    r.DUE_DATE) DELAY_DAYS FROM RENT r JOIN BOOK_ITEM bi ON r.ITEM_ID = bi.ITEM_ID JOIN BOOK b ON
+    b.BOOK_ID = bi.BOOK_ID JOIN USERS u ON r.USER_ID = u.USER_ID WHERE SYSDATE > r.DUE_DATE AND
+    bi.STATUS = '대여중'</select>
+
+</mapper>
