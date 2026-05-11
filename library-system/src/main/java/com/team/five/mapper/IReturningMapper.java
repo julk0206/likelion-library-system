@@ -6,20 +6,19 @@ import org.apache.ibatis.annotations.Param;
 
 import com.team.five.dto.BookItemDto;
 import com.team.five.dto.RentDto;
-import com.team.five.dto.ReservationDto;
 import com.team.five.dto.response.OverdueResponseDto;
 
 public interface IReturningMapper {
 
   /**
-   * userId 와 bookId 를 통해 현재 대여중인 Rent_Id 를 반환합니다.
+   * userId 와 bookId 를 통해 현재 "대여중" 인 Rent_Id 를 반환합니다.
    *
    * @param userId -> int
    * @param bookId -> int
    *
    * @return RentDto {rentId -> int}
    */
-  public RentDto getRentId(@Param("userId") int userId, @Param("bookId") int bookId);
+  public RentDto getUnreturnedRentId(@Param("userId") int userId, @Param("bookId") int bookId);
 
   /**
    * RENT 테이블의 returnDate를 'sysdate' 로 Update 합니다.
@@ -28,7 +27,7 @@ public interface IReturningMapper {
    *
    * @return 0 or 1
    */
-  public int updateBookAsRetuning(@Param("rentId") int rentId);
+  public int updateBookAsReturning(int rentId);
 
   /**
    * rentId를 통해 현재 대여 중인 책에 대한 예약이 있는지 확인
@@ -36,22 +35,22 @@ public interface IReturningMapper {
    *
    * @param rentId -> int
    *
-   * @return ReservationDto { itemId -> int}
+   * @return RentDto { itemId -> int}
    */
-  public ReservationDto getItemId(@Param("rentId") int rentId);
+  public RentDto getRentedItemId(int rentId);
 
   /**
-   * 책 고유 id를 통해 해당 책의 상태를 변경 (Update)
+   * 책 고유 id를 통해 해당 책의 상태를 status 값으로 변경 (Update)
+   * 
+   * ex) updateBookStatus(123, "대여중");
    *
-   * toggleOption ? 대여중 -> 대여가능 : 대여가능 -> 대여중
    *
-   *
-   * @param itemId       -> int
-   * @param toggleOption -> boolean
+   * @param itemId -> int
+   * @param status -> String
    *
    * @return : 0 or 1
    */
-  public int updateBookStatusToggle(@Param("itemId") int itemId, boolean toggleOption);
+  public int updateBookStatus(@Param("itemId") int itemId, @Param("status") String status);
 
   /**
    * 수
@@ -61,7 +60,16 @@ public interface IReturningMapper {
    *
    * @return : ReservataionDto {userId , bookId}
    */
-  public BookItemDto getTopPriorityReservation(@Param("bookId") int bookId);
+  public BookItemDto getTopPriorityReservation(int bookId);
+
+  /**
+   * bookId 를 통해 대여 가능한 고유 책 ID(itemId) 를 가져 옵니다.
+   *
+   * @param bookId
+   *
+   * @return : BookItemDto {itemId}
+   */
+  public BookItemDto getRentAvailableItemId(int bookId);
 
   /**
    * 새로운 대여 정보를 생성합니다. Due_date는 기본적으로 +7 일 입니다.
@@ -80,7 +88,7 @@ public interface IReturningMapper {
    *
    * @return : 0 or 1
    */
-  public int updateReservationAsRented(@Param("reservationId") int reservationId);
+  public int updateReservationAsRented(int reservationId);
 
   /**
    * 연체 정보를 모두 불러 옵니다.
