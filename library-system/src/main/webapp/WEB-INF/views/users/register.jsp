@@ -118,7 +118,7 @@
   <div class="error-msg">${errorMsg}</div>
   <% } %>
 
-  <form action="/users/register.do" method="post">
+  <form action="${pageContext.request.contextPath}/users/register.do" method="post">
     <label for="name">이름</label>
     <input type="text" id="name" name="name" placeholder="이름을 입력하세요" required autofocus>
 
@@ -130,7 +130,7 @@
 
   <p class="footer-text">
     이미 회원이신가요?
-    <a href="/users/login.do">로그인</a>
+    <a href="${pageContext.request.contextPath}/users/login.do">로그인</a>
   </p>
   <p class="footer-text" style="margin-top:8px;">© 2025 Team Five Library</p>
 </div>

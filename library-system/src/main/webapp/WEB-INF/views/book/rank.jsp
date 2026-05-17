@@ -36,7 +36,7 @@
     </table>
 
     <div style="text-align: center;">
-        <a href="list.do">전체 도서 목록으로 돌아가기</a>
+        <a href="${pageContext.request.contextPath}/book/list.do">전체 도서 목록으로 돌아가기</a>
     </div>
 </body>
 </html>
