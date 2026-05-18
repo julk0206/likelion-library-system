@@ -57,7 +57,7 @@
                             <td>
                                 <c:if test="${item.status eq '대여가능'}">
                                     <%-- 나중에 대여 로직으로 연결될 버튼 --%>
-                                    <button onclick="location.href='../rent/order.do?itemId=${item.itemId}'">대여</button>
+                                    <button onclick="alert('대여 기능은 구현 중입니다!')">대여</button>
                                 </c:if>
                             </td>
                         </tr>

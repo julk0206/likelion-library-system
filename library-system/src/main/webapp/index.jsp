@@ -135,14 +135,14 @@
 
 <header>
   <div class="brand">LibrarySystem</div>
-  <a href="/users/register.do" class="btn-login-header" style="margin-right:8px; background-color:transparent; color:#fff; border:2px solid #fff;">회원가입</a>
-  <a href="/users/login.do" class="btn-login-header">로그인</a>
+  <a href="${pageContext.request.contextPath}/users/register.do" class="btn-login-header" style="margin-right:8px; background-color:transparent; color:#fff; border:2px solid #fff;">회원가입</a>
+  <a href="${pageContext.request.contextPath}/users/login.do" class="btn-login-header">로그인</a>
 </header>
 
 <div class="hero">
   <h1>도서 대여 관리 시스템</h1>
   <p>원하는 책을 검색하고, 간편하게 대여 · 예약하세요.</p>
-  <a href="/users/login.do" class="btn-start">시작하기</a>
+  <a href="${pageContext.request.contextPath}/users/login.do" class="btn-start">시작하기</a>
 </div>
 
 <div class="features">

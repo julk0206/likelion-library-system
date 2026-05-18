@@ -174,8 +174,8 @@
 <nav class="navbar">
     <a class="navbar-brand" href="${pageContext.request.contextPath}/book/list.do">LibrarySystem</a>
     <div class="navbar-right">
-        <a href="/book/list.do">도서 목록</a>
-        <a href="/book/rank.do">인기 도서</a>
+        <a href="${pageContext.request.contextPath}/book/list.do">도서 목록</a>
+        <a href="${pageContext.request.contextPath}/book/rank.do">인기 도서</a>
         <span class="navbar-user">${userName} 님</span>
     </div>
 </nav>
@@ -217,12 +217,14 @@
                             <td>${r.reservationDate}</td>
                             <td><span class="status-badge">${r.status}</span></td>
                             <td>
-                                <form action="/reserve/delete.do" method="post"
-                                      onsubmit="return confirm('예약을 취소하시겠습니까?')">
-                                    <input type="hidden" name="reservationId" value="${r.reservationId}">
-                                    <input type="hidden" name="userId" value="${userId}">
-                                    <button type="submit" class="btn-cancel">취소</button>
-                                </form>
+                                <c:if test="${r.status ne '대출완료'}">
+                                    <form action="${pageContext.request.contextPath}/reserve/delete.do" method="post"
+                                          onsubmit="return confirm('예약을 취소하시겠습니까?')">
+                                        <input type="hidden" name="reservationId" value="${r.reservationId}">
+                                        <input type="hidden" name="userId" value="${userId}">
+                                        <button type="submit" class="btn-cancel">취소</button>
+                                    </form>
+                                </c:if>
                             </td>
                         </tr>
                     </c:forEach>

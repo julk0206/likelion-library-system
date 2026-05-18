@@ -110,7 +110,7 @@
   <div class="error-msg">${errorMsg}</div>
   <% } %>
 
-  <form action="/users/login.do" method="post">
+  <form action="${pageContext.request.contextPath}/users/login.do" method="post">
     <label for="userId">사용자 ID</label>
     <input type="number" id="userId" name="userId" placeholder="ID를 입력하세요" required autofocus min="1">
     <button type="submit" class="btn-login">로그인</button>
