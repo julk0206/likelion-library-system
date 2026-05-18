@@ -1,15 +1,11 @@
 package com.team.five.service;
 
-import com.team.five.config.SqlSessionFactoryManager;
 import com.team.five.dto.JwtTokenDto;
 import com.team.five.dto.LoginDto;
 import com.team.five.dto.UsersDto;
 import com.team.five.jwt.JwtTokenProvider;
 import com.team.five.mapper.UsersMapper;
 import lombok.RequiredArgsConstructor;
-
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -17,12 +13,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class UsersService {
+public class UsersSpringService {
 
     private final UsersMapper usersMapper;
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
-    private final SqlSessionFactory manager = SqlSessionFactoryManager.getFactory();
 
     // USER_ID 기준 사용자 조회
     public UsersDto getUserByUserId(int userId) {
@@ -31,13 +26,8 @@ public class UsersService {
 
 
     // 사용자 추가
-    public int insertUser(UsersDto usersDto){
-        try(SqlSession session = manager.openSession(true)){
-            int result = 0;
-            UsersMapper mapper = session.getMapper(UsersMapper.class);
-            result = mapper.insertUser(usersDto);
-            return result;
-        }
+    public int insertUser(UsersDto usersDto) {
+        return usersMapper.insertUser(usersDto);
     }
 
 

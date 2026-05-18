@@ -16,7 +16,7 @@ import java.io.IOException;
 @WebServlet("/users/*")
 public class UsersController extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    private UsersService usersService = new UsersService();
+    private UsersService usersService;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
