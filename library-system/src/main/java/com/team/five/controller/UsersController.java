@@ -102,7 +102,6 @@ public class UsersController extends HttpServlet {
 
         String name = req.getParameter("name");
         String ageParam = req.getParameter("age");
-        int age = Integer.parseInt(ageParam);
 
         if (name == null || ageParam == null) {
             req.setAttribute("errorMsg", "이름과 나이를 모두 입력해주세요.");
@@ -113,6 +112,8 @@ public class UsersController extends HttpServlet {
             req.getRequestDispatcher("/WEB-INF/views/users/register.jsp").forward(req, resp);
             return;
         }
+        // null 체크 후 파싱하여 NullPointerException 방지
+        int age = Integer.parseInt(ageParam);
 
         UsersDto newUser = new UsersDto();
         newUser.setName(name.trim());
