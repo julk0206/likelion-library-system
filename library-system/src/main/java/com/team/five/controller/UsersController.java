@@ -98,7 +98,7 @@ public class UsersController extends HttpServlet {
         log.info("insertUser POST 회원가입");
 
         req.setCharacterEncoding("UTF-8");
-        resp.setContentType("text/html; charset=TUF-8");
+        resp.setContentType("text/html; charset=UTF-8");
 
         String name = req.getParameter("name");
         String ageParam = req.getParameter("age");
