@@ -2,9 +2,10 @@
 .DS_Store
 /Servers/
 /.metadata/
-**/oracle.properties
-**/application.properties
+# **/oracle.properties
+# **/application.properties
 *.sql
+.env
 
 # Created by https://www.toptal.com/developers/gitignore/api/java,eclipse,dbeaver,maven
 # Edit at https://www.toptal.com/developers/gitignore?templates=java,eclipse,dbeaver,maven
