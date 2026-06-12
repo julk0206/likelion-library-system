@@ -58,7 +58,7 @@ public interface IReturningMapper {
    *
    * @param bookId -> int
    *
-   * @return : ReservataionDto {userId , bookId}
+   * @return : ReservationDto {userId , bookId}
    */
   public BookItemDto getTopPriorityReservation(int bookId);
 
@@ -82,7 +82,7 @@ public interface IReturningMapper {
   public int insertRentRaw(@Param("userId") int userId, @Param("itemId") int itemId);
 
   /**
-   * Reservataion 테이블의 예약 상태를 '예약진행중' -> '대출완료'
+   * Reservation 테이블의 예약 상태를 '예약진행중' -> '대출완료'
    *
    * @param reservationId -> int
    *
